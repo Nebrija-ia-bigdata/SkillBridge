@@ -1,0 +1,15 @@
+[theme]
+# Verde salvia suave, tomado de la imagen
+primaryColor = "#90C7AC"
+
+# Un fondo muy, muy claro, con un toque de verde/gris
+#backgroundColor = "#F5F8F7"
+
+# El fondo de los widgets (inputs, uploaders) será blanco puro
+secondaryBackgroundColor = "#FFFFFF"
+
+# Texto oscuro estándar
+textColor = "#31333F"
+
+# Fuente limpia
+font = "sans serif"

@@ -1,0 +1,109 @@
+/* --- 1. FONDO DE PÁGINA (TODA LA APP) --- */
+/*
+  Este es el selector "oficial" y estable para 
+  el contenedor principal de la app.
+*/
+[data-testid="stApp"] {
+    /* Tu color base */
+    background: #769a8c;
+
+    /* Tu gradiente */
+    background-image: linear-gradient(
+        20deg,
+        rgba(118, 154, 140, 1) 0%,
+        rgba(177, 225, 183, 1) 20%,
+        rgba(253, 253, 253, 1) 50%
+    );
+  
+
+    background-attachment: fixed;
+
+    /* Clave: Asegura que el gradiente cubra toda la pantalla */
+    background-size: cover;
+}
+
+/* --- 2. HERO BANNER (MODIFICADO) --- */
+/* Apuntamos al primer 'st.container' dentro del 
+   área de contenido principal 
+*/
+div[data-testid="main"] > div:first-child {
+    /* Fondo de vidrio semitransparente para que 
+       se vea el gradiente de fondo */
+    background-color: rgba(255, 255, 255, 0.7);
+
+    /* (Opcional) Efecto "vidrio esmerilado" */
+    backdrop-filter: blur(10px);
+
+    /* Forma redondeada y sombra */
+    padding: 2.5rem;
+    border-radius: 24px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde de 'vidrio' */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* --- 3. ESTILOS DE TEXTO DEL BANNER --- */
+div[data-testid="main"] > div:first-child h1 {
+    color: #2a3d45;
+    font-size: 2.5rem;
+}
+
+div[data-testid="main"] > div:first-child .stMarkdown p {
+    color: #3b5a4b;
+    font-size: 1.1rem;
+}
+
+div[data-testid="main"] > div:first-child .stImage {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* --- 4. TIPOGRAFÍA GENERAL --- */
+h1 {
+    color: #2a3d45;
+    font-weight: 600;
+}
+
+h2,
+h3 {
+    color: #4a4a4a;
+    border-bottom: none;
+    padding-bottom: 5px;
+}
+
+/* --- 5. WIDGETS (Inputs, Uploaders) --- */
+.stFileUploader,
+.stTextInput > div,
+.stTextArea > div,
+.stSelectbox > div {
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stTextInput input,
+.stTextArea textarea {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* --- 6. BOTONES --- */
+.stButton > button {
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #31333f;
+    font-weight: 600;
+    padding: 10px 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
