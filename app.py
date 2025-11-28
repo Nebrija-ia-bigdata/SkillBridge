@@ -46,7 +46,7 @@ with st.sidebar:
         with col1:
             st.image(logo_path, width=60)
         with col2:
-            st.markdown("<h2 style='margin:0; font-size:24px;'>SkillBridge</h2>", unsafe_allow_html=True)
+            st.markdown("<h2 style='margin:0; font-size:24px;'>Skill<span>Bridge</span></h2>", unsafe_allow_html=True)
     else:
         st.markdown("## SkillBridge")
 
@@ -92,7 +92,7 @@ st.markdown(
             <div style="flex-shrink: 0; margin-right: 15px;">
                 {img_html}
             </div>
-            <h1 style="margin: 0; font-size: 2.5rem;">SkillBridge</h1>
+            <h1 style="margin: 0; font-size: 2.5rem;">Skill<span>Bridge</span></h1>
         </div>
         <div style="text-align: left;">
             <p style="margin: 0; opacity: 0.8;">Tu asistente inteligente para análisis de carrera y habilidades transferibles</p>
@@ -107,10 +107,43 @@ if "cv_texto" not in st.session_state:
     st.session_state["cv_texto"] = ""
 
 # --- NAVEGACIÓN POR PESTAÑAS ---
-tab1, tab2, tab3 = st.tabs(
-    ["📄 Analizar mi Perfil", "🎯 Transición de Carrera", "⚖️ Comparador de CVs"]
-)
 
+# 1. Cargamos las imágenes en memoria
+icon_1 = get_image_base64("assets/document-text-svgrepo-com.png")
+icon_2 = get_image_base64("assets/transition-right-svgrepo-com.png")
+icon_3 = get_image_base64("assets/balance-svgrepo-com.png") # Asegúrate que la ruta es correcta
+
+# 2. INYECTAMOS EL CSS DINÁMICO
+# El truco es apuntar a 'button ... p' (al texto) en vez de al 'button'
+st.markdown(f"""
+    <style>
+        button[data-baseweb="tab"] {{
+            padding-left: 0 !important; 
+        }}
+        button[data-baseweb="tab"] p {{
+            padding-left: 30px !important;
+            background-repeat: no-repeat !important;
+            background-position: 0% 55% !important; 
+            background-size: 20px !important;       
+            display: inline-block; 
+            line-height: 24px;
+        }}
+        button[data-baseweb="tab"]:nth-of-type(1) p {{
+            background-image: url('{icon_1}') !important;
+        }}
+        button[data-baseweb="tab"]:nth-of-type(2) p {{
+            background-image: url('{icon_2}') !important;
+        }}
+        button[data-baseweb="tab"]:nth-of-type(3) p {{
+            background-image: url('{icon_3}') !important;
+        }}
+    </style>
+""", unsafe_allow_html=True)
+
+# 3. Creamos los tabs
+tab1, tab2, tab3 = st.tabs(
+    ["Analizar Perfil", "Transición de Carrera", "Comparador de CVs"]
+)
 # ==========================================
 # PESTAÑA 1: ANÁLISIS INDIVIDUAL
 # ==========================================

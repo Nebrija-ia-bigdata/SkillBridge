@@ -1,27 +1,53 @@
 /* --- 1. FONDO GENERAL --- */
+/* 1. FONDO PRINCIPAL: COLOR VERDE DESDE ABAJO */
 [data-testid="stApp"] {
-    background: #769a8c;
+    background-color: transparent !important;
+    background-image: none !important;
+    
+    /* CAMBIO AQUÍ: 'to top' hace que el color empiece abajo */
     background-image: linear-gradient(
-        20deg,
-        rgba(118, 154, 140, 1) 0%,
-        rgba(177, 225, 183, 1) 20%,
-        rgba(253, 253, 253, 1) 50%
-    );
-    background-attachment: fixed;
-    background-size: cover;
-}
-.st-emotion-cache-1r1cntt {
-    padding: 0 !important;
+        to top right, 
+        rgba(118, 154, 140, 0.7) 0%,   
+        rgba(255, 255, 255, 0) 50%     
+    ) !important;
+    
+    background-attachment: fixed !important;
 }
 
+/* 2. REJILLA (DASHED GRID): DESDE ARRIBA A LA DERECHA */
+[data-testid="stApp"]::before {
+    content: "";
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100vw; 
+    height: 100vh;
+    z-index: -1; 
+    background-color: #ffffff; 
+
+    /* A. DIBUJO DE LA REJILLA */
+    background-image: 
+        linear-gradient(to right, #769a8c 1px, transparent 1px),
+        linear-gradient(to bottom, #769a8c 1px, transparent 1px);
+    
+    background-size: 20px 20px; 
+
+    -webkit-mask-image: 
+        radial-gradient(ellipse 80% 80% at 100% 0%, #2a3d45 40%, transparent 100%),
+        repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px);
+    -webkit-mask-composite: source-in; 
+    mask-composite: intersect;
+    pointer-events: none;
+    opacity: 0.4;
+}
 .spacer {
     height: 450px;
 }
 
 /* --- 2. HEADER PERSONALIZADO --- */
 .main-header {
-    margin-bottom: 80px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 40px;
     text-align: center;
 }
 
@@ -34,18 +60,26 @@
 }
 
 .main-header p {
-    color: #555;
+    color: #2a3d45;
     font-size: 1.1rem;
 }
 
 /* --- 3. ESTILO DE LAS PESTAÑAS (TABS) --- */
 button[data-baseweb="tab"] {
-    background-color: rgba(255, 255, 255, 0.4);
-    border-radius: 10px;
-    margin-right: 10px;
-    border: none;
+    flex-grow: 1;
+    flex-basis: 0;
     color: #2a3d45;
-    font-weight: 600;
+    border: none;
+    border-radius: 10px 10px 0 0; 
+    text-align: center;
+    justify-content: center;
+    padding: 15px 0;       
+    margin: 0;            
+    transition: all 0.2s ease;
+}
+button[data-baseweb="tab"] > div[data-testid="stMarkdownContainer"] p {
+    font-size: 18px !important; 
+    font-weight: 500 !important;
 }
 
 button[data-baseweb="tab"][aria-selected="true"] {
@@ -53,6 +87,20 @@ button[data-baseweb="tab"][aria-selected="true"] {
     color: white !important;
 }
 
+div[data-baseweb="tab-list"] {
+    display: flex;
+    width: 100%;    
+    gap: 10px;     
+}
+
+button[data-baseweb="tab"] > div {
+    width: 100%;
+    text-align: center;
+}
+div[data-baseweb="tab-border"] {
+    background-color: #a8c0b649 !important;
+    height: 2px !important;
+}
 /* --- 4. TARJETAS DE RESULTADOS --- */
 .result-card {
     background-color: rgba(255, 255, 255, 0.85);
@@ -69,12 +117,21 @@ h3 {
     color: #2a3d45 !important;
 }
 
+span{
+    color: #769a8c;
+}
 .stAlert {
     border-radius: 12px;
 }
 
 /* --- CONFIGURACIÓN DE LA BARRA LATERAL (CONTENEDOR PADRE) --- */
-
+section[data-testid="stSidebar"]{
+    box-shadow: 5px 0px 15px rgb(42, 61, 69,0.1);
+    
+    /* IMPORTANTE: Hace que el sidebar esté "por encima" del contenido principal
+       para que la sombra se proyecte sobre él */
+    z-index: 999999;
+}
 section[data-testid="stSidebar"] .stVerticalBlock {
     display: flex;
     flex-direction: column;
@@ -112,4 +169,8 @@ section[data-testid="stSidebar"] .stVerticalBlock {
     background-color: #769a8c;
     border: 1px solid #769a8c;
     border-radius: 20px;
+}
+
+.st-emotion-cache-1r1cntt {
+    padding: 0 !important;
 }
