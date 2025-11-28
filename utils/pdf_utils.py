@@ -1,4 +1,4 @@
-import fitz  
+import fitz 
 
 def extract_pdf_text(pdf_file):
     """Extracts raw text from the uploaded PDF using PyMuPDF."""
