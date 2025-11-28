@@ -174,3 +174,44 @@ section[data-testid="stSidebar"] .stVerticalBlock {
 .st-emotion-cache-1r1cntt {
     padding: 0 !important;
 }
+
+[data-testid="stFileUploader"] small {
+    color: #2a3d45 !important;
+    opacity: 0.8;
+}
+
+[data-testid="stFileUploader"] section {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px dashed #769a8c;
+}
+
+/* --- ESTILO PARA INPUTS DE TEXTO Y ÁREAS DE TEXTO --- */
+
+/* 1. Estilo base del campo (Input y Text Area) */
+[data-testid="stTextInput"] input, 
+[data-testid="stTextArea"] textarea {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+    border: 1px solid #769a8c !important;
+    border-radius: 8px !important;
+    color: #2a3d45 !important;
+    transition: all 0.3s ease;
+}
+
+/* 2. Efecto al hacer clic (FOCUS) */
+[data-testid="stTextInput"] input:focus, 
+[data-testid="stTextArea"] textarea:focus {
+    background-color: #ffffff !important;
+    border: 1px solid #769a8c !important;
+    border-color: #2a3d45 !important; 
+    box-shadow: 0 0 0 3px rgba(118, 154, 140, 0.2) !important; 
+}
+
+[data-testid="stTextInput"] label,
+[data-testid="stTextArea"] label {
+    color: #2a3d45 !important;
+    font-weight: 600 !important;
+}
+
+[data-testid="stFileUploader"] svg {
+    fill: #769a8c !important; 
+}

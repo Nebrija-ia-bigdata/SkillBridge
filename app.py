@@ -111,10 +111,8 @@ if "cv_texto" not in st.session_state:
 # 1. Cargamos las imágenes en memoria
 icon_1 = get_image_base64("assets/document-text-svgrepo-com.png")
 icon_2 = get_image_base64("assets/transition-right-svgrepo-com.png")
-icon_3 = get_image_base64("assets/balance-svgrepo-com.png") # Asegúrate que la ruta es correcta
+icon_3 = get_image_base64("assets/balance-svgrepo-com.png") 
 
-# 2. INYECTAMOS EL CSS DINÁMICO
-# El truco es apuntar a 'button ... p' (al texto) en vez de al 'button'
 st.markdown(f"""
     <style>
         button[data-baseweb="tab"] {{
@@ -147,11 +145,26 @@ tab1, tab2, tab3 = st.tabs(
 # ==========================================
 # PESTAÑA 1: ANÁLISIS INDIVIDUAL
 # ==========================================
+def mostrar_pdf_en_iframe(pdf_file):
+    base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
+    pdf_display = f"""
+        <iframe 
+            src="data:application/pdf;base64,{base64_pdf}#toolbar=0&navpanes=0&scrollbar=0&view=FitH" 
+            width="100%" 
+            height="600px" 
+            type="application/pdf" 
+            style="border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        </iframe>
+    """
+    
+    # 3. Renderizamos
+    st.markdown(pdf_display, unsafe_allow_html=True)
+    
 with tab1:
-    col1, col2 = st.columns([1, 2])
+    col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.markdown("### 1. Sube tu documento")
+        st.markdown("### Sube tu documento")
         pdf = st.file_uploader("Sube tu CV (PDF)", type=["pdf"], key="pdf_main")
 
         if pdf:
@@ -159,37 +172,33 @@ with tab1:
             with st.spinner("Leyendo documento..."):
                 texto = extract_pdf_text(pdf)
                 st.session_state["cv_texto"] = texto
-            st.success("✅ Documento cargado")
+                
+            st.markdown("---")
 
-            # Vista previa en expander para no ocupar espacio
-            with st.expander("👀 Ver texto extraído"):
-                st.text_area("Contenido raw", texto, height=150)
-
-    with col2:
-        if st.session_state["cv_texto"]:
-            st.markdown("### 2. Resultados del Análisis")
+            # 2. RESULTADOS DEL ANÁLISIS (Tu código original)
+            st.markdown("### Resultados del Análisis")
 
             # Botón principal
-            if st.button("🔍 Detectar Habilidades (Soft & Hard)", type="primary"):
+            if st.button("Detectar Habilidades (Soft & Hard)", type="primary"):
                 with st.spinner("Analizando con IA..."):
                     resumen = summarize_text(
                         st.session_state["cv_texto"]
                         + "\n\nExtrae habilidades formato lista.",
                         modelo=modelo,
                     )
-                    # Usamos HTML container para dar estilo de tarjeta
                     st.markdown(
                         f"""
                         <div class="result-card">
-                            <h3>🧩 Habilidades Detectadas</h3>
+                            <h3>Habilidades Detectadas</h3>
                             {resumen}
                         </div>
                     """,
                         unsafe_allow_html=True,
                     )
 
-            st.markdown("---")
-            st.markdown("#### 💬 Chat con tu CV")
+            # Chat con el CV
+            st.write("")
+            st.markdown("#### Chat con tu CV")
             pregunta = st.text_input(
                 "Pregunta algo específico (ej: ¿Tengo experiencia en liderazgo?)"
             )
@@ -201,19 +210,53 @@ with tab1:
                     st.markdown(
                         f"""
                         <div class="result-card" style="border-left-color: #f1c40f;">
-                            <b>🤖 Respuesta:</b><br>{respuesta}
+                            <b>Respuesta:</b><br>{respuesta}
                         </div>
                     """,
                         unsafe_allow_html=True,
                     )
+
+    with col2:
+        # CASO A: SI HAY TEXTO (PDF SUBIDO) -> MOSTRAMOS EL PDF Y EL ANÁLISIS
+        if st.session_state.get("cv_texto"):
+            
+            # 1. MOSTRAR EL PDF EN PANTALLA
+            st.markdown("###Vista del Documento")
+            # Importante: 'pdf' es la variable del file_uploader de la col1. 
+            # Asegúrate de que esta variable sea accesible aquí.
+            if pdf: 
+                mostrar_pdf_en_iframe(pdf)
+            
+        # CASO B: NO HAY PDF -> MOSTRAMOS EL CUADRADO BLANCO (PLACEHOLDER)
         else:
-            st.info("👈 Sube un PDF en la columna izquierda para comenzar.")
+            # HTML para el "Cuadrado Blanco" o hoja vacía
+            empty_state_html = """
+            <div style="
+                background-color: rgba(255, 255, 255, 0.5);
+                border: 1px dashed #769a8c;
+                border-radius: 15px; 
+                min-height: 500px; 
+                display: flex; 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center; 
+                text-align: center;
+                color: #6b7280;
+            ">
+                <div style="font-size: 50px; margin-bottom: 20px; opacity: 0.5;">📄</div>
+                <h3 style="margin: 0; font-size: 20px; color: #4b5563;">Vista Previa</h3>
+                <p style="margin-top: 10px; font-size: 14px;">
+                    Sube tu CV en la izquierda para<br>ver el documento aquí.
+                </p>
+            </div>
+            """
+            st.markdown(empty_state_html, unsafe_allow_html=True)
 
 # ==========================================
 # PESTAÑA 2: TRANSICIÓN PROFESIONAL
 # ==========================================
 with tab2:
-    st.markdown("### 🚀 Plan de Transición de Carrera")
+    st.markdown("###Plan de Transición de Carrera")
 
     col_t1, col_t2 = st.columns(2)
     with col_t1:
@@ -231,7 +274,7 @@ with tab2:
         st.write("")  # Espaciador
         st.write("")
         analizar_btn = st.button(
-            "✨ Generar Análisis de Brechas", use_container_width=True
+            "Generar Análisis de Brechas", use_container_width=True, type="primary"
         )
 
     if analizar_btn and perfil_input and nuevo_puesto:
@@ -240,7 +283,7 @@ with tab2:
             st.markdown(
                 f"""
                 <div class="result-card">
-                    <h3>🎯 Estrategia Personalizada</h3>
+                    <h3>Estrategia Personalizada</h3>
                     {resultado}
                 </div>
             """,
@@ -251,7 +294,7 @@ with tab2:
 # PESTAÑA 3: COMPARADOR
 # ==========================================
 with tab3:
-    st.markdown("### ⚖️ A/B Testing de Currículums")
+    st.markdown("###A/B Testing de Currículums")
     st.write("Sube dos versiones de tu CV para ver cuál se adapta mejor a una oferta.")
 
     col_c1, col_c2, col_c3 = st.columns([1, 1, 1])
@@ -262,7 +305,7 @@ with tab3:
         cv2 = st.file_uploader("Versión B", type=["pdf"], key="cv2")
     with col_c3:
         puesto_objetivo = st.text_input("Puesto Objetivo", key="target_pos")
-        comparar_btn = st.button("⚖️ Analizar Ganador", type="primary")
+        comparar_btn = st.button("Analizar Ganador", type="primary")
 
     if comparar_btn:
         if cv1 and cv2 and puesto_objetivo:
@@ -278,7 +321,7 @@ with tab3:
                 st.markdown(
                     f"""
                     <div class="result-card" style="border-left: 5px solid #e74c3c;">
-                        <h3>🏆 Resultados de la Comparativa</h3>
+                        <h3>Resultados de la Comparativa</h3>
                         {resultado}
                     </div>
                 """,
@@ -287,4 +330,4 @@ with tab3:
             except Exception as e:
                 st.error(f"Error al procesar: {e}")
         else:
-            st.warning("⚠️ Por favor sube ambos archivos y define el puesto.")
+            st.warning("Por favor sube ambos archivos y define el puesto.")
