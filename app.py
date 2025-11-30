@@ -12,8 +12,7 @@ def get_image_base64(path):
     try:
         with open(path, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode()
-        # CAMBIO AQUÍ: Pon 'image/png' si tus iconos son PNG
-        return f"data:image/png;base64,{encoded_string}" 
+        return f"data:image/png;base64,{encoded_string}"
     except Exception as e:
         print(f"Error cargando imagen base64: {e}")
         return ""
@@ -22,6 +21,7 @@ def get_image_base64(path):
 logo_path = os.path.join("assets", "logo_skillbridge_img-Photoroom.png")
 logo_b64 = get_image_base64(logo_path)
 img_html = f'<img src="{logo_b64}" width="70" style="margin-right: 20px; border-radius: 10px;">'
+
 
 # --- FUNCIÓN CSS ---
 def local_css(file_name):
@@ -46,29 +46,37 @@ with st.sidebar:
         with col1:
             st.image(logo_path, width=60)
         with col2:
-            st.markdown("<h2 style='margin:0; font-size:24px;'>Skill<span>Bridge</span></h2>", unsafe_allow_html=True)
+            st.markdown(
+                "<h2 style='margin:0; font-size:24px;'>Skill<span>Bridge</span></h2>",
+                unsafe_allow_html=True,
+            )
     else:
         st.markdown("## SkillBridge")
 
-    st.write("") 
     st.write("")
-
+    st.write("")
 
     # Elección de IA
     st.markdown("### Modelos de IA:")
     modelo = st.selectbox(
-        "Elige un modelo:", ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"], index=0
+        "Elige un modelo:",
+        [
+            "llama-3.3-70b-versatile",
+            "llama-3.1-8b-instant",
+            "openai/gpt-oss-120b",
+            "qwen/qwen3-32b",
+        ],
+        index=0,
     )
     st.markdown("<div class='spacer'></div>", unsafe_allow_html=True)
 
-
-    #Footer
+    # Footer
     linkedin_img = get_image_base64(os.path.join("assets", "linkedin-svgrepo-com.png"))
     github_img = get_image_base64(os.path.join("assets", "github-svgrepo-com.png"))
 
     linkedin_url = ""
     github_url = "https://github.com/Nebrija-ia-bigdata/SkillBridge"
-    
+
     footer_html = f"""
     <div class="sidebar-footer">
         <hr> 
@@ -111,9 +119,10 @@ if "cv_texto" not in st.session_state:
 # 1. Cargamos las imágenes en memoria
 icon_1 = get_image_base64("assets/document-text-svgrepo-com.png")
 icon_2 = get_image_base64("assets/transition-right-svgrepo-com.png")
-icon_3 = get_image_base64("assets/balance-svgrepo-com.png") 
+icon_3 = get_image_base64("assets/balance-svgrepo-com.png")
 
-st.markdown(f"""
+st.markdown(
+    f"""
     <style>
         button[data-baseweb="tab"] {{
             padding-left: 0 !important; 
@@ -136,17 +145,20 @@ st.markdown(f"""
             background-image: url('{icon_3}') !important;
         }}
     </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # 3. Creamos los tabs
 tab1, tab2, tab3 = st.tabs(
     ["Analizar Perfil", "Transición de Carrera", "Comparador de CVs"]
 )
-# ==========================================
-# PESTAÑA 1: ANÁLISIS INDIVIDUAL
-# ==========================================
+
+
+# ========================================== PESTAÑA 1: ANÁLISIS INDIVIDUAL ==========================================
+# Para mostrar el cv que se ha subido
 def mostrar_pdf_en_iframe(pdf_file):
-    base64_pdf = base64.b64encode(pdf_file.getvalue()).decode('utf-8')
+    base64_pdf = base64.b64encode(pdf_file.getvalue()).decode("utf-8")
     pdf_display = f"""
         <iframe 
             src="data:application/pdf;base64,{base64_pdf}#toolbar=0&navpanes=0&scrollbar=0&view=FitH" 
@@ -156,10 +168,10 @@ def mostrar_pdf_en_iframe(pdf_file):
             style="border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
         </iframe>
     """
-    
-    # 3. Renderizamos
+
     st.markdown(pdf_display, unsafe_allow_html=True)
-    
+
+
 with tab1:
     col1, col2 = st.columns([1, 1])
 
@@ -172,10 +184,10 @@ with tab1:
             with st.spinner("Leyendo documento..."):
                 texto = extract_pdf_text(pdf)
                 st.session_state["cv_texto"] = texto
-                
+
             st.markdown("---")
 
-            # 2. RESULTADOS DEL ANÁLISIS (Tu código original)
+            # 2. RESULTADOS DEL ANÁLISIS
             st.markdown("### Resultados del Análisis")
 
             # Botón principal
@@ -209,7 +221,7 @@ with tab1:
                     )
                     st.markdown(
                         f"""
-                        <div class="result-card" style="border-left-color: #f1c40f;">
+                        <div class="result-card" style="border-left-color: #769a8c;">
                             <b>Respuesta:</b><br>{respuesta}
                         </div>
                     """,
@@ -217,19 +229,13 @@ with tab1:
                     )
 
     with col2:
-        # CASO A: SI HAY TEXTO (PDF SUBIDO) -> MOSTRAMOS EL PDF Y EL ANÁLISIS
         if st.session_state.get("cv_texto"):
-            
-            # 1. MOSTRAR EL PDF EN PANTALLA
-            st.markdown("###Vista del Documento")
-            # Importante: 'pdf' es la variable del file_uploader de la col1. 
-            # Asegúrate de que esta variable sea accesible aquí.
-            if pdf: 
+
+            st.markdown("### Vista del Documento")
+            if pdf:
                 mostrar_pdf_en_iframe(pdf)
-            
-        # CASO B: NO HAY PDF -> MOSTRAMOS EL CUADRADO BLANCO (PLACEHOLDER)
+
         else:
-            # HTML para el "Cuadrado Blanco" o hoja vacía
             empty_state_html = """
             <div style="
                 background-color: rgba(255, 255, 255, 0.5);
@@ -252,15 +258,12 @@ with tab1:
             """
             st.markdown(empty_state_html, unsafe_allow_html=True)
 
-# ==========================================
-# PESTAÑA 2: TRANSICIÓN PROFESIONAL
-# ==========================================
+# ========================================== PESTAÑA 2: TRANSICIÓN PROFESIONAL ==========================================
 with tab2:
-    st.markdown("###Plan de Transición de Carrera")
+    st.markdown("### Plan de Transición de Carrera")
 
     col_t1, col_t2 = st.columns(2)
     with col_t1:
-        # Usamos el texto del CV cargado o permitimos escribir manual
         perfil_input = st.text_area(
             "Tu perfil actual:",
             value=st.session_state.get("cv_texto", ""),
@@ -271,7 +274,7 @@ with tab2:
         nuevo_puesto = st.text_input(
             "¿A qué puesto aspiras?", placeholder="Ej: Product Manager"
         )
-        st.write("")  # Espaciador
+        st.write("")  
         st.write("")
         analizar_btn = st.button(
             "Generar Análisis de Brechas", use_container_width=True, type="primary"
@@ -290,19 +293,24 @@ with tab2:
                 unsafe_allow_html=True,
             )
 
-# ==========================================
-# PESTAÑA 3: COMPARADOR
-# ==========================================
+# ========================================== PESTAÑA 3: COMPARADOR ==========================================
+
 with tab3:
-    st.markdown("###A/B Testing de Currículums")
+    st.markdown("### A/B Testing de Currículums")
     st.write("Sube dos versiones de tu CV para ver cuál se adapta mejor a una oferta.")
 
     col_c1, col_c2, col_c3 = st.columns([1, 1, 1])
 
     with col_c1:
         cv1 = st.file_uploader("Versión A", type=["pdf"], key="cv1")
+        if cv1:
+            mostrar_pdf_en_iframe(cv1)
+            
     with col_c2:
         cv2 = st.file_uploader("Versión B", type=["pdf"], key="cv2")
+        if cv2:
+            mostrar_pdf_en_iframe(cv2)
+            
     with col_c3:
         puesto_objetivo = st.text_input("Puesto Objetivo", key="target_pos")
         comparar_btn = st.button("Analizar Ganador", type="primary")
@@ -310,17 +318,21 @@ with tab3:
     if comparar_btn:
         if cv1 and cv2 and puesto_objetivo:
             try:
+                # Reiniciar los punteros de los archivos para poder leerlos de nuevo
+                cv1.seek(0)
+                cv2.seek(0)
+                
                 text_a = extract_pdf_text(cv1)
                 text_b = extract_pdf_text(cv2)
 
-                with st.spinner("Comparando semánticamente..."):
+                with st.spinner("Comparando los currículums..."):
                     resultado = compare_cvs_for_position(
                         text_a, text_b, puesto_objetivo
                     )
 
                 st.markdown(
                     f"""
-                    <div class="result-card" style="border-left: 5px solid #e74c3c;">
+                    <div class="result-card" style="border-left: 5px solid #769a8c;">
                         <h3>Resultados de la Comparativa</h3>
                         {resultado}
                     </div>
