@@ -3,8 +3,6 @@
 [data-testid="stApp"] {
     background-color: transparent !important;
     background-image: none !important;
-    
-    /* CAMBIO AQUÍ: 'to top' hace que el color empiece abajo */
     background-image: linear-gradient(
         to top right, 
         rgba(118, 154, 140, 0.7) 0%,   
@@ -127,9 +125,6 @@ span{
 /* --- CONFIGURACIÓN DE LA BARRA LATERAL (CONTENEDOR PADRE) --- */
 section[data-testid="stSidebar"]{
     box-shadow: 5px 0px 15px rgb(42, 61, 69,0.1);
-    
-    /* IMPORTANTE: Hace que el sidebar esté "por encima" del contenido principal
-       para que la sombra se proyecte sobre él */
     z-index: 999999;
 }
 section[data-testid="stSidebar"] .stVerticalBlock {

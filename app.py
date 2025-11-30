@@ -156,14 +156,14 @@ tab1, tab2, tab3 = st.tabs(
 
 
 # ========================================== PESTAÑA 1: ANÁLISIS INDIVIDUAL ==========================================
-# Para mostrar el cv que se ha subido
+# Función para mostrar el cv que se ha subido
 def mostrar_pdf_en_iframe(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode("utf-8")
     pdf_display = f"""
         <iframe 
             src="data:application/pdf;base64,{base64_pdf}#toolbar=0&navpanes=0&scrollbar=0&view=FitH" 
             width="100%" 
-            height="600px" 
+            height="850px" 
             type="application/pdf" 
             style="border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
         </iframe>
@@ -227,7 +227,7 @@ with tab1:
                     """,
                         unsafe_allow_html=True,
                     )
-
+    # Vista del CV
     with col2:
         if st.session_state.get("cv_texto"):
 
