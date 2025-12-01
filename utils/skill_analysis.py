@@ -4,7 +4,7 @@ from .llm_utils import cliente
 def analyze_career_transition(
     perfil_usuario, nuevo_puesto, modelo="llama-3.3-70b-versatile"
 ):
-    """Compara habilidades actuales del usuario con las requeridas para el nuevo puesto"""
+    #Compara habilidades actuales del usuario con las requeridas para el nuevo puesto
     prompt = f"""
         Actúa como un orientador laboral experto en análisis de habilidades transferibles.
         Usa EXCLUSIVAMENTE la información proporcionada en el perfil del usuario. No inventes experiencia laboral ni habilidades que no aparezcan en el texto.
@@ -38,9 +38,8 @@ def analyze_career_transition(
 def compare_cvs_for_position(
     cv1_texto, cv2_texto, puesto_objetivo, modelo="llama-3.3-70b-versatile"
 ):
-    """
-    Compara dos CVs respecto a un puesto objetivo y devuelve cuál es más adecuado.
-    """
+    #Compara dos CVs respecto a un puesto objetivo y devuelve cuál es más adecuado.
+    
     prompt = f"""
     Actúa como un orientador laboral experto. Tengo dos versiones de un CV y un puesto objetivo.
 
