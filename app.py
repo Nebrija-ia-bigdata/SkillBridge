@@ -7,7 +7,7 @@ from utils.llm_utils import summarize_text, ask_about_text
 from utils.skill_analysis import analyze_career_transition, compare_cvs_for_position
 
 
-# --- FUNCIÓN AUXILIAR PARA IMÁGENES EN HTML ---
+# ------------------ FUNCIÓN AUXILIAR PARA IMÁGENES EN HTML ------------------
 def get_image_base64(path):
     try:
         with open(path, "rb") as image_file:
@@ -23,7 +23,7 @@ logo_b64 = get_image_base64(logo_path)
 img_html = f'<img src="{logo_b64}" width="70" style="margin-right: 20px; border-radius: 10px;">'
 
 
-# --- FUNCIÓN CSS ---
+# ------------------ FUNCIÓN CSS ------------------
 def local_css(file_name):
     try:
         with open(file_name, "r", encoding="utf-8") as f:
@@ -32,12 +32,12 @@ def local_css(file_name):
         st.warning(f"No se cargó el estilo: {e}")
 
 
-# --- CONFIGURACIÓN ---
+# ------------------ CONFIGURACIÓN ------------------
 st.set_page_config(page_title="SkillBridge", page_icon=logo_path, layout="wide")
 local_css("styles.css")
 
 
-# --- SIDEBAR ---
+# ------------------ SIDEBAR ------------------
 with st.sidebar:
     # Logo y Título
     logo_path = os.path.join("assets", "logo_skillbridge_img-Photoroom.png")
@@ -92,7 +92,7 @@ with st.sidebar:
     st.markdown(footer_html, unsafe_allow_html=True)
 
 
-# --- HEADER ---
+# ------------------ HEADER ------------------
 st.markdown(
     f"""
     <div class="main-header">
@@ -110,13 +110,12 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- GESTIÓN DE ESTADO (Session State) ---
+# ------------------ GESTIÓN DE ESTADO CON SESSION STATE ------------------
 if "cv_texto" not in st.session_state:
     st.session_state["cv_texto"] = ""
 
-# --- NAVEGACIÓN POR PESTAÑAS ---
+# ------------------ NAVEGACIÓN POR PESTAÑAS ------------------
 
-# 1. Cargamos las imágenes en memoria
 icon_1 = get_image_base64("assets/document-text-svgrepo-com.png")
 icon_2 = get_image_base64("assets/transition-right-svgrepo-com.png")
 icon_3 = get_image_base64("assets/balance-svgrepo-com.png")
@@ -155,7 +154,7 @@ tab1, tab2, tab3 = st.tabs(
 )
 
 
-# ========================================== PESTAÑA 1: ANÁLISIS INDIVIDUAL ==========================================
+# ------------------ PESTAÑA 1: ANÁLISIS INDIVIDUAL ------------------
 # Función para mostrar el cv que se ha subido
 def mostrar_pdf_en_iframe(pdf_file):
     base64_pdf = base64.b64encode(pdf_file.getvalue()).decode("utf-8")
@@ -163,7 +162,7 @@ def mostrar_pdf_en_iframe(pdf_file):
         <iframe 
             src="data:application/pdf;base64,{base64_pdf}#toolbar=0&navpanes=0&scrollbar=0&view=FitH" 
             width="100%" 
-            height="850px" 
+            height="670px" 
             type="application/pdf" 
             style="border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
         </iframe>
@@ -187,7 +186,6 @@ with tab1:
 
             st.markdown("---")
 
-            # 2. RESULTADOS DEL ANÁLISIS
             st.markdown("### Resultados del Análisis")
 
             # Botón principal
@@ -258,7 +256,7 @@ with tab1:
             """
             st.markdown(empty_state_html, unsafe_allow_html=True)
 
-# ========================================== PESTAÑA 2: TRANSICIÓN PROFESIONAL ==========================================
+# ------------------ PESTAÑA 2: TRANSICIÓN PROFESIONAL ------------------
 with tab2:
     st.markdown("### Plan de Transición de Carrera")
 
@@ -293,7 +291,7 @@ with tab2:
                 unsafe_allow_html=True,
             )
 
-# ========================================== PESTAÑA 3: COMPARADOR ==========================================
+# ------------------ PESTAÑA 3: COMPARADOR ------------------
 
 with tab3:
     st.markdown("### A/B Testing de Currículums")
