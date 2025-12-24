@@ -162,7 +162,7 @@ def mostrar_pdf_en_iframe(pdf_file):
         <iframe 
             src="data:application/pdf;base64,{base64_pdf}#toolbar=0&navpanes=0&scrollbar=0&view=FitH" 
             width="100%" 
-            height="670px" 
+            height="470px" 
             type="application/pdf" 
             style="border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
         </iframe>
@@ -239,7 +239,7 @@ with tab1:
                 background-color: rgba(255, 255, 255, 0.5);
                 border: 1px dashed #769a8c;
                 border-radius: 15px; 
-                min-height: 500px; 
+                min-height: 400px; 
                 display: flex; 
                 flex-direction: column; 
                 justify-content: center; 
